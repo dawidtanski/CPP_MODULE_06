@@ -6,7 +6,7 @@
 #    By: dtanski <dtanski@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/31 05:10:32 by dtanski           #+#    #+#              #
-#    Updated: 2025/09/30 15:19:02 by dtanski          ###   ########.fr        #
+#    Updated: 2025/11/24 15:25:59 by dtanski          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror -Wshadow -std=c++98 -g -I inc/
 SRC_DIR = src
 OBJ_DIR = obj
 SRC =	src/main.cpp \
-		src/Bureaucrat.cpp\
+		src/ScalarConverter.cpp\
 
 		
 OBJ = $(SRC:src/%.cpp=obj/%.o)

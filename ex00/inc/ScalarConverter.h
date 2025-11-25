@@ -1,6 +1,9 @@
 #pragma once
+#include <iostream>
+#include <cstdlib>
+#include <iomanip>
 
 class ScalarConverter{
-	private:
-		convert
+	public:
+		static void convert(const std::string &num);
 };
