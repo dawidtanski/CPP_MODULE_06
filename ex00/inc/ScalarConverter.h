@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <iomanip>
+#include <limits>
 
 class ScalarConverter{
 	public:
