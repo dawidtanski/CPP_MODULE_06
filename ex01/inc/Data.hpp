@@ -3,7 +3,6 @@
 #include <iostream>
 
 struct Data{
-	std::string brand;
-	std::string carModel;
-	int	carAge;
-}
+	std::string name;
+	int age;
+};
