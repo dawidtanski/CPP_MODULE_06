@@ -6,11 +6,11 @@
 #    By: dtanski <dtanski@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/31 05:10:32 by dtanski           #+#    #+#              #
-#    Updated: 2025/09/30 15:19:02 by dtanski          ###   ########.fr        #
+#    Updated: 2025/11/30 15:45:20 by dtanski          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =  ex00
+NAME =  baseTest
 
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -Wshadow -std=c++98 -g -I inc/
@@ -18,7 +18,8 @@ CFLAGS = -Wall -Wextra -Werror -Wshadow -std=c++98 -g -I inc/
 SRC_DIR = src
 OBJ_DIR = obj
 SRC =	src/main.cpp \
-		src/Bureaucrat.cpp\
+		src/Base.cpp\
+		src/functions.cpp\
 
 		
 OBJ = $(SRC:src/%.cpp=obj/%.o)

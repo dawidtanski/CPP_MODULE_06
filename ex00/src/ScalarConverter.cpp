@@ -1,6 +1,10 @@
 #include "../inc/ScalarConverter.h"
 
-bool	isStringANum(std::string str){
+bool isCharLiteral(const std::string &str) {
+	return (str.size() == 3 && str[0] == '\'' && str[2] == '\'');
+}
+
+bool isStringANum(std::string str){
 	int len = str.size();
 	int	i = 0;
 	int dotFlag = 0;
@@ -26,71 +30,86 @@ bool	isStringANum(std::string str){
 	return true;
 }
 
+void printChar(double value) {
+	if (value < 0 || value > 127 || value != static_cast<int>(value))
+		std::cout << "char: impossible" << std::endl;
+	else if (value < 32 || value > 126)
+		std::cout << "char: Non displayable" << std::endl;
+	else
+		std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
+}
+
+void printInt(double value) {
+	if (value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max()
+		|| value != value) // NaN check
+		std::cout << "int: impossible" << std::endl;
+	else
+		std::cout << "int: " << static_cast<int>(value) << std::endl;
+}
+
 void	ScalarConverter::convert(const std::string &num){
 	int numlen = num.size();
 	std::cout << std::fixed << std::setprecision(1);
 
-	if (numlen == 1 && std::isalpha((num[0]))){
-			std::cerr << "Given argument is not a number" << std::endl;
-			return ;
-		}
-
-	if (isStringANum(num)){
-		if (atoi(num.c_str()) == 0){
-			std::cout << "char: Non displayable" << std::endl;
-			std::cout << "int: " << atoi(num.c_str()) << std::endl;
-			std::cout << "float: " << static_cast<float>(atof(num.c_str())) << "f" << std::endl;
-			std::cout << "double: " << atof(num.c_str()) << std::endl;
-		} else {
-			std::cout << "char: *" << std::endl;
-			std::cout << "int: " << atoi(num.c_str()) << std::endl;
-			std::cout << "float: " << static_cast<float>(atof(num.c_str())) << "f" << std::endl;
-			std::cout << "double: " << atof(num.c_str()) << std::endl;
-		}
-		return ;
-	}
-	if ( numlen && num[numlen - 1] == 'f'){
-		std::string num_str = num;
-		num_str.erase(numlen - 1);
-		std::cout << num_str;
-		if (!isStringANum(num_str)){
-			std::cerr << "Given argument is not a number" << std::endl;
-			return ;
-		}
-
-		std::cout << "char: *" << std::endl;
-		std::cout << "int: " << atoi(num_str.c_str()) << std::endl;
-		std::cout << "float: " << static_cast<float>(atof(num_str.c_str())) << "f" << std::endl;
-		std::cout << "double: " << atof(num_str.c_str()) << std::endl;
+	// Handle char literal like 'a'
+	if (isCharLiteral(num)) {
+		char c = num[1];
+		std::cout << "char: '" << c << "'" << std::endl;
+		std::cout << "int: " << static_cast<int>(c) << std::endl;
+		std::cout << "float: " << static_cast<float>(c) << "f" << std::endl;
+		std::cout << "double: " << static_cast<double>(c) << std::endl;
 		return;
 	}
 
+	// Handle single printable char (without quotes)
+	if (numlen == 1 && std::isprint(num[0]) && !std::isdigit(num[0])) {
+		char c = num[0];
+		std::cout << "char: '" << c << "'" << std::endl;
+		std::cout << "int: " << static_cast<int>(c) << std::endl;
+		std::cout << "float: " << static_cast<float>(c) << "f" << std::endl;
+		std::cout << "double: " << static_cast<double>(c) << std::endl;
+		return;
+	}
+
+	// Handle nan/nanf
 	if (num == "nan" || num == "nanf"){
 		std::cout << "char: impossible" << std::endl;
 		std::cout << "int: impossible" << std::endl;
 		std::cout << "float: nanf" << std::endl;
 		std::cout << "double: nan" << std::endl;
-		return ;
+		return;
 	}
-	if (num == "+inf" || num == "-inf" || num == "+inff" || num == "-inff"){
-		float iPos =  std::numeric_limits<double>::infinity();
-		float iNeg = -std::numeric_limits<double>::infinity();
 
+	// Handle inf
+	if (num == "+inf" || num == "-inf" || num == "+inff" || num == "-inff" ||
+		num == "inf" || num == "inff"){
 		std::cout << "char: impossible" << std::endl;
 		std::cout << "int: impossible" << std::endl;
-		if (num == "+inf" || num == "+inff"){
-			std::cout << "float: " << static_cast<float>(iPos) << "f" << std::endl;
-			std::cout << "double: " << iPos << std::endl;
-
-		}
-		else{
-			std::cout << "float: " << static_cast<float>(iNeg) << "f" << std::endl;
-			std::cout << "double: " << iNeg << std::endl;
+		if (num[0] == '-'){
+			std::cout << "float: -inff" << std::endl;
+			std::cout << "double: -inf" << std::endl;
+		} else {
+			std::cout << "float: inff" << std::endl;
+			std::cout << "double: inf" << std::endl;
 		}
 		return;
 	}
-	if (!isStringANum(num)){
-			std::cerr << "Given argument is not a number" << std::endl;
-			return ;
-		}
+
+	// Handle float literal (ends with 'f')
+	std::string num_str = num;
+	if (numlen > 1 && num[numlen - 1] == 'f'){
+		num_str = num.substr(0, numlen - 1);
+	}
+
+	if (!isStringANum(num_str)){
+		std::cerr << "Given argument is not a valid literal" << std::endl;
+		return;
+	}
+
+	double value = atof(num_str.c_str());
+
+	printChar(value);
+	printInt(value);
+	std::cout << "float: " << static_cast<float>(value) << "f" << std::endl;
+	std::cout << "double: " << value << std::endl;
 }
