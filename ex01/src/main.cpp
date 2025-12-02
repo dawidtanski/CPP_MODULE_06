@@ -18,6 +18,8 @@ int main(void){
 	ptr2 = Serializer::deserialize(ptr_adress_0);
 
 	std::cout << "Original ptr: " << ptr << std::endl;
+	std::cout << "Pointer adress: " << ptr_adress_0 << std::endl;
+	std::cout << std::hex << "Pointer adress in hex: " << ptr_adress_0 << std::endl;
 	std::cout << "Deserialized ptr: " << ptr2 <<std::endl;
 
 
