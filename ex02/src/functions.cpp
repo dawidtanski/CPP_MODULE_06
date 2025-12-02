@@ -18,7 +18,9 @@ Base* generate(void){
 	}
 }
 
-// Reference cannot be null so dynamic cast  cant returns null in the case of unsuccesfull casting
+// Dynamic cast is type of casting where type of objecy is checked in runtime
+
+// In case of succesfull casting dynamic_cast returns an object, if it fails it returns NULL
 void identify(Base *p){
 	if (dynamic_cast<A*>(p))
 		std::cout << "A" << std::endl;

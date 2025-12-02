@@ -2,6 +2,7 @@
 
 // uintptr is a variable type which have always enough
 // size to storage an pointer adress
+// Reinterpret cast is made during compilation - compilator just prescripes code
 uintptr_t Serializer::serialize(Data* ptr){
 
 	uintptr_t ptr_res;
